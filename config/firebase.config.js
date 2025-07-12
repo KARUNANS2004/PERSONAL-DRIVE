@@ -6,7 +6,6 @@ const firebase=Firebase.initializeApp({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-        serviceAccount
     }),
     storageBucket:'drive-clone-e70b3.firebasestorage.app',
 })
