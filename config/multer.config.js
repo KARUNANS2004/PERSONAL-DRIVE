@@ -1,18 +1,21 @@
-const { credential } = require('firebase-admin')
-const multer=require('multer')
-const firebaseStorage=require('multer-firebase-storage')
-const firebase=require('./firebase.config')
-const serviceAccount=require('../drive-clone-e70b3-firebase-adminsdk-3fyxq-968b6f6603.json')
+const multer = require('multer');
+const firebaseStorage = require('multer-firebase-storage');
 
-const storage=firebaseStorage({
-    credentials:firebase.credential.cert(serviceAccount),
-    bucketName:'drive-clone-e70b3.firebasestorage.app',
-    unique:true,
-})
+const storage = firebaseStorage({
+  credentials: {
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  },
+  bucketName: 'drive-clone-e70b3.appspot.com', // 🔁 Make sure this is correct
+  unique: true,
+  name: (req, file) => {
+    return `${Date.now()}-${file.originalname}`;
+  },
+});
 
+const upload = multer({
+  storage: storage,
+});
 
-const upload=multer({
-    storage:storage,
-})
-
-module.exports=upload;
+module.exports = upload;
