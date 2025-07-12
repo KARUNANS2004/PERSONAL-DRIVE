@@ -1,78 +1,35 @@
-# PERSONAL-DRIVE
-This is just a backend project to show and understand the functioning of google drive clone so used ejs for a simple frontend
+## 📦 Server-Side Routes Overview – Personal Drive 🗂️
 
-#🔐 Authentication Routes (user.routes.js)
+This app replicates core functionality of **Google Drive**, with a secure backend and server-rendered navigation using Express, MongoDB, JWT & Firebase.
 
-GET /register
-Renders the user registration page.
+---
 
-Fields: email, username, password
+### 🔐 Authentication Routes (user.routes.js)
 
-POST /register
-Validates and registers a new user.
+| Route         | Method | Description                                      |
+|---------------|--------|--------------------------------------------------|
+| `/register`   | GET    | Renders user registration form 📝               |
+| `/register`   | POST   | Registers user with hashed password 🔒           |
+| `/login`      | GET    | Renders login page 🔑                            |
+| `/login`      | POST   | Authenticates user & issues cookie-based JWT 🧾 |
 
-Hashes password using bcrypt before saving.
+> ⚠️ All credentials are securely handled and tokens are stored in cookies via `cookie-parser`.
 
-Responds with the created user object.
+---
 
-GET /login
-Renders the login form.
+### 📂 File Handling Routes (index.routes.js)
 
-Fields: username, password
+| Route                  | Method | Protected | Description                                           |
+|------------------------|--------|-----------|-------------------------------------------------------|
+| `/home`                | GET    | ✅        | Renders dashboard showing all user files 📋          |
+| `/upload`              | POST   | ✅        | Uploads a file to Firebase Storage + stores metadata ⬆️ |
+| `/download/:path`      | GET    | ✅        | Validates and provides a signed download URL 🔗      |
 
-POST /login
-Authenticates user credentials.
+🔐 Auth is handled via a middleware (`authMiddleware`) that:
+- Verifies JWT from cookies
+- Redirects unauthenticated users to `/login`
 
-On success:
+---
 
-Creates a JWT token
-
-Stores it in cookies using cookie-parser
-
-Redirects user to /home
-
-On failure: returns error JSON.
-
-#📂 File Management Routes (index.routes.js)
-
-These routes are protected using a custom middleware: authMiddleware, which verifies JWT from cookies.
-
-GET /home
-Dashboard view: lists all files uploaded by the logged-in user.
-
-Uses res.render('home') to display files dynamically.
-
-POST /upload
-Uploads a single file to Firebase Cloud Storage.
-
-Stores file metadata in MongoDB:
-
-originalName
-
-path (Firebase file path)
-
-user (userId reference)
-
-GET /download/:path
-Validates the file belongs to the logged-in user.
-
-If valid:
-
-Generates a signed URL from Firebase.
-
-Redirects user to download the file.
-
-If not found or unauthorized:
-
-Responds with 401 Unauthorized.
-
-#🛡️ Middleware: authMiddleware.js
-
-Extracts JWT from cookies.
-
-Verifies using JWT_SECRET from .env.
-
-If valid: adds user data to req.user.
-
-If invalid or missing: redirects to /login.
+### 🔄 Route Navigation Flow (ASCII Diagram)
 
