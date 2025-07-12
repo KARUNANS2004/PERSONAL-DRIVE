@@ -1,6 +1,8 @@
 # PERSONAL-DRIVE
 This is just a backend project to show and understand the functioning of google drive clone so used ejs for a simple frontend
-🔐 Authentication Routes (user.routes.js)
+
+#🔐 Authentication Routes (user.routes.js)
+
 GET /register
 Renders the user registration page.
 
@@ -31,7 +33,8 @@ Redirects user to /home
 
 On failure: returns error JSON.
 
-📂 File Management Routes (index.routes.js)
+#📂 File Management Routes (index.routes.js)
+
 These routes are protected using a custom middleware: authMiddleware, which verifies JWT from cookies.
 
 GET /home
@@ -63,7 +66,8 @@ If not found or unauthorized:
 
 Responds with 401 Unauthorized.
 
-🛡️ Middleware: authMiddleware.js
+#🛡️ Middleware: authMiddleware.js
+
 Extracts JWT from cookies.
 
 Verifies using JWT_SECRET from .env.
